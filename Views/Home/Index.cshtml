@@ -1,0 +1,474 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+@section Styles {
+    <link href="~/assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/datatables.net-select-bs5/css//select.bootstrap5.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Hindari scroll vertikal */
+        }
+
+        .layout-wrapper, .page-content {
+            height: 100%;
+        }
+
+        .page-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .page-content > .d-flex {
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        .right-panel {
+            min-width: 250px;
+            max-width: 500px;
+            overflow-y: auto;
+            border-left: 1px solid #ddd;
+        }
+
+        .card-right {
+            border-radius: 10px;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .nav-pills .nav-link {
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #555;
+            background-color: #f1f5f9;
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: #1f1f31;
+            color: #fff;
+        }
+
+        .nav-pills .nav-justified .nav-item {
+            flex: 1 1 auto;
+        }
+
+        .nav-pills .nav-justified .nav-link {
+            width: 100%;
+        }
+
+        .nav-tabs .nav-link.active {
+            border-bottom: 2px solid #1f1f31 !important; /* Bisa pakai warna lain */
+            color: #1f1f31;
+        }
+
+        .nav-tabs .nav-link:hover {
+            border-bottom: 2px solid #1f1f31; /* Ganti warna sesuai keinginan */
+            color: #1f1f31;
+        }
+    </style>
+}
+
+<div class="d-flex h-100">
+    <div id="map" class="flex-grow-1"></div>
+
+    <div class="right-panel bg-light p-3" style="width: 800px;">
+        <div class="card card-right">
+            <div class="card-body">
+                <ul class="nav nav-pills navtab-bg nav-justified mb-3" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" data-bs-toggle="tab" href="#ews" role="tab">
+                            <span>EWS</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#curah" role="tab">
+                            <span>CURAH HUJAN</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" data-bs-toggle="tab" href="#muka" role="tab">
+                            <span>MUKA AIR</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane" id="ews">
+                        <div class="table-responsive">
+                            <table id="table-ews" class="table dt-responsive nowrap w-100">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Pos Peringatan</th>
+                                        <th>Status</th>
+                                        <th>Muka Air</th>
+                                        <th>Kritis</th>
+                                        <th>Peringatan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Kota Bengkulu</td>
+                                        <td>-</td>
+                                        <td>1.5</td>
+                                        <td>2.1</td>
+                                        <td>3.5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kota Bengkulu</td>
+                                        <td>-</td>
+                                        <td>1.5</td>
+                                        <td>2.1</td>
+                                        <td>3.5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kota Bengkulu</td>
+                                        <td>-</td>
+                                        <td>1.5</td>
+                                        <td>2.1</td>
+                                        <td>3.5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kota Bengkulu</td>
+                                        <td>-</td>
+                                        <td>1.5</td>
+                                        <td>2.1</td>
+                                        <td>3.5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kota Bengkulu</td>
+                                        <td>-</td>
+                                        <td>1.5</td>
+                                        <td>2.1</td>
+                                        <td>3.5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kota Bengkulu</td>
+                                        <td>-</td>
+                                        <td>1.5</td>
+                                        <td>2.1</td>
+                                        <td>3.5</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane show active" id="curah">
+                        <div class="table-responsive">
+                            <table id="table-rainfall" class="table dt-responsive nowrap w-100">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Pos Pengamatan</th>
+                                        <th>Pengukuran</th>
+                                        <th>Tanggal</th>
+                                        <th>CH</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Kota Bengkulu</td>
+                                        <td>A/M</td>
+                                        <td>2025-07-15 14:50</td>
+                                        <td>2.1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kota Bengkulu</td>
+                                        <td>A/M</td>
+                                        <td>2025-07-15 14:50</td>
+                                        <td>2.1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kota Bengkulu</td>
+                                        <td>A/M</td>
+                                        <td>2025-07-15 14:50</td>
+                                        <td>2.1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kota Bengkulu</td>
+                                        <td>A/M</td>
+                                        <td>2025-07-15 14:50</td>
+                                        <td>2.1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kota Bengkulu</td>
+                                        <td>A/M</td>
+                                        <td>2025-07-15 14:50</td>
+                                        <td>2.1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kota Bengkulu</td>
+                                        <td>A/M</td>
+                                        <td>2025-07-15 14:50</td>
+                                        <td>2.1</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="muka">
+                        <div class="table-responsive">
+                            <table id="table-tma" class="table dt-responsive nowrap w-100">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Pos Pengamatan</th>
+                                        <th>Pengukuran</th>
+                                        <th>Tanggal</th>
+                                        <th>TMA</th>
+                                        <th>Debit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Kota Bengkulu</td>
+                                        <td>A/M</td>
+                                        <td>2025-07-15 14:50</td>
+                                        <td>2.1</td>
+                                        <td>10.4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kota Bengkulu</td>
+                                        <td>A/M</td>
+                                        <td>2025-07-15 14:50</td>
+                                        <td>2.1</td>
+                                        <td>10.4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kota Bengkulu</td>
+                                        <td>A/M</td>
+                                        <td>2025-07-15 14:50</td>
+                                        <td>2.1</td>
+                                        <td>10.4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kota Bengkulu</td>
+                                        <td>A/M</td>
+                                        <td>2025-07-15 14:50</td>
+                                        <td>2.1</td>
+                                        <td>10.4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kota Bengkulu</td>
+                                        <td>A/M</td>
+                                        <td>2025-07-15 14:50</td>
+                                        <td>2.1</td>
+                                        <td>10.4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kota Bengkulu</td>
+                                        <td>A/M</td>
+                                        <td>2025-07-15 14:50</td>
+                                        <td>2.1</td>
+                                        <td>10.4</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-right">
+            <div class="card-body">
+                <ul class="nav nav-tabs nav-bordered nav-justified">
+                    <li class="nav-item">
+                        <a href="#awlr" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                            <span class="d-inline-block d-sm-none"><i class="mdi mdi-home-variant"></i></span>
+                            <span class="d-none d-sm-inline-block">Duga Air
+                                <span class="badge bg-primary ms-1">1</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#arr" data-bs-toggle="tab" aria-expanded="true" class="nav-link active">
+                            <span class="d-inline-block d-sm-none"><i class="mdi mdi-account"></i></span>
+                            <span class="d-none d-sm-inline-block">Curah Hujan
+                                <span class="badge bg-success ms-1">1</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#aws" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                            <span class="d-inline-block d-sm-none"><i class="mdi mdi-email-variant"></i></span>
+                            <span class="d-none d-sm-inline-block">Klimatologi
+                                <span class="badge bg-danger ms-1">1</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane" id="awlr">
+                        <div class="card shadow-sm mb-3">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span><i class="text-success me-2">●</i>AWLR BATU MERAH</span>
+                                <span>
+                                    <span class="fw-semibold">Higertech</span>
+                                    <span class="badge bg-secondary ms-2">HGT217</span>
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <div class="row text-center align-items-center">
+                                    <div class="col-md-4 mb-2">
+                                        <h5 class="mb-0">-</h5>
+                                        <small class="text-muted">Debit</small>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <h5 class="mb-0">2 m</h5>
+                                        <small class="text-muted">Tinggi Muka Air</small>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <span class="badge bg-success ms-2">NORMAL</span>
+                                        <div><small class="text-muted">Status Siaga</small></div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <div class="progress" style="height: 10px; border-radius: 8px;">
+                                            <div class="progress-bar bg-success" style="width: 60%; border-top-left-radius: 8px; border-bottom-left-radius: 8px;"></div>
+                                            <div class="progress-bar bg-warning" style="width: 20%;"></div>
+                                            <div class="progress-bar bg-orange" style="width: 10%; background-color: #ff9800;"></div>
+                                            <div class="progress-bar bg-danger" style="width: 10%; border-top-right-radius: 8px; border-bottom-right-radius: 8px;"></div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between mt-1 px-1" style="font-size: 0.75rem;">
+                                            <span class="text-success">0</span>
+                                            <span class="text-warning">3m</span>
+                                            <span class="text-orange" style="color: #ff9800;">4m</span>
+                                            <span class="text-danger">5m</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-muted">
+                                <i class="fa-solid fa-clock"></i> 16 Juli 2025 13:50
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane active" id="arr">
+                        <div class="card shadow-sm mb-3">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span><i class="text-success me-2">●</i>ARR AIR BUAYA</span>
+                                <span>
+                                    <span class="fw-semibold">Higertech</span>
+                                    <span class="badge bg-secondary ms-2">HG1237</span>
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <div class="row text-center align-items-center">
+                                    <div class="col-md-4 mb-2">
+                                        <h5 class="mb-0">15:32</h5>
+                                        <small class="text-muted">Waktu (WIT)</small>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <h5 class="mb-0">0 mm</h5>
+                                        <small class="text-muted">Curah Hujan</small>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/1163/1163624.png" width="30" alt="Cuaca">
+                                        <div><small class="text-muted">Tidak Ada Hujan</small></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-muted">
+                                <i class="fa-solid fa-clock"></i> 16 Juli 2025
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="aws">
+                        <div class="card shadow-sm mb-3">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span><i class="text-success me-2">●</i>AWS HALONG</span>
+                                <span>
+                                    <span class="fw-semibold">Higertech</span>
+                                    <span class="badge bg-secondary ms-2">HGT217</span>
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <div class="row text-center align-items-center">
+                                    <div class="col-md-3 mb-2">
+                                        <h5 class="mb-0">75%</h5>
+                                        <small class="text-muted">Kelembapan</small>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <h5 class="mb-0"><i class="fas fa-arrow-up"></i> 70 °</h5>
+                                        <small class="text-muted">Arah Angin</small>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <h5 class="mb-0">26 °</h5>
+                                        <small class="text-muted">Suhu</small>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <h5 class="mb-0">0 mm</h5>
+                                        <small class="text-muted">Penguapan</small>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3 text-center align-items-center">
+                                    <div class="col-md-3 mb-2">
+                                        <h5 class="mb-0">0 mm</h5>
+                                        <small class="text-muted">Curah Hujan</small>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <h5 class="mb-0">80 MB</h5>
+                                        <small class="text-muted">Tekanan</small>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <h5 class="mb-0">236 W/m<sup>2</sup></h5>
+                                        <small class="text-muted">Radiasi Matahari</small>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <h5 class="mb-0">1 km/jam</h5>
+                                        <small class="text-muted">Kec. Angin</small>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3 text-center align-items-center">
+                                    <div class="col-md-12 mb-2">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/1163/1163624.png" width="30" alt="Cuaca">
+                                        <div><small class="text-muted">Tidak Ada Hujan</small></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-muted">
+                                <i class="fa-solid fa-clock"></i> 16 Juli 2025 13:55
+                            </div>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/pages/index.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4jqcen5Xqrgck4V73aL6VepyKp2_wK1U&callback=initMap" async defer></script>
+
+    <script src="~/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="~/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/assets/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
+    <script src="~/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/assets/libs/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js"></script>
+    <script src="~/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/assets/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="~/assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="~/assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="~/assets/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+    <script src="~/assets/libs/pdfmake/build/pdfmake.min.js"></script>
+    <script src="~/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="~/assets/js/pages/datatables.js"></script>
+}
